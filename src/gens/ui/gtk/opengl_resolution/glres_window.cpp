@@ -75,7 +75,7 @@ void glres_window_show(void)
 	gtk_window_set_position(GTK_WINDOW(glres_window), GTK_WIN_POS_CENTER);
 	gtk_window_set_resizable(GTK_WINDOW(glres_window), FALSE);
 	gtk_window_set_type_hint(GTK_WINDOW(glres_window), GDK_WINDOW_TYPE_HINT_DIALOG);
-	gtk_dialog_set_has_separator(GTK_DIALOG(glres_window), FALSE);
+	_gtk_dialog_set_ignore_separator(GTK_DIALOG(glres_window), FALSE);
 	
 	// Callbacks for if the window is closed.
 	g_signal_connect((gpointer)(glres_window), "delete_event",

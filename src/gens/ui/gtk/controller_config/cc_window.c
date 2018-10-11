@@ -142,7 +142,7 @@ void cc_window_show(void)
 	gtk_window_set_position(GTK_WINDOW(cc_window), GTK_WIN_POS_CENTER);
 	gtk_window_set_resizable(GTK_WINDOW(cc_window), FALSE);
 	gtk_window_set_type_hint(GTK_WINDOW(cc_window), GDK_WINDOW_TYPE_HINT_DIALOG);
-	gtk_dialog_set_has_separator(GTK_DIALOG(cc_window), FALSE);
+	_gtk_dialog_set_ignore_separator(GTK_DIALOG(cc_window), FALSE);
 	
 	// Callbacks for if the window is closed.
 	g_signal_connect((gpointer)(cc_window), "delete_event",
@@ -310,7 +310,7 @@ static void cc_window_create_controller_port_frame(GtkWidget *container, int por
 				 (GtkAttachOptions)(0), 0, 0);
 		
 		// Pad type dropdown.
-		cboPadType[player] = gtk_combo_box_new_text();
+		cboPadType[player] = gtk_combo_box_new();
 		gtk_widget_show(cboPadType[player]);
 		gtk_table_attach(GTK_TABLE(tblPlayers), cboPadType[player],
 				 1, 2, i, i + 1,
@@ -318,8 +318,8 @@ static void cc_window_create_controller_port_frame(GtkWidget *container, int por
 				 (GtkAttachOptions)(0), 0, 0);
 		
 		// Pad type dropdown entries.
-		gtk_combo_box_append_text(GTK_COMBO_BOX(cboPadType[player]), "3 buttons");
-		gtk_combo_box_append_text(GTK_COMBO_BOX(cboPadType[player]), "6 buttons");
+		gtk_combo_box_text_append_text(GTK_COMBO_BOX(cboPadType[player]), "3 buttons");
+		gtk_combo_box_text_append_text(GTK_COMBO_BOX(cboPadType[player]), "6 buttons");
 		
 		// Connect the "changed" signal for the pad type dropdown.
 		g_signal_connect(GTK_OBJECT(cboPadType[player]), "changed",

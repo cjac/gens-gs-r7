@@ -88,7 +88,7 @@ void ntsc_window_show(void *parent)
 	gtk_window_set_position(GTK_WINDOW(ntsc_window), GTK_WIN_POS_CENTER);
 	gtk_window_set_resizable(GTK_WINDOW(ntsc_window), FALSE);
 	gtk_window_set_type_hint(GTK_WINDOW(ntsc_window), GDK_WINDOW_TYPE_HINT_DIALOG);
-	gtk_dialog_set_has_separator(GTK_DIALOG(ntsc_window), FALSE);
+	_gtk_dialog_set_ignore_separator(GTK_DIALOG(ntsc_window), FALSE);
 	
 	// Callbacks for if the window is closed.
 	g_signal_connect((gpointer)ntsc_window, "delete_event",
@@ -132,7 +132,7 @@ void ntsc_window_show(void *parent)
 	gtk_box_pack_start(GTK_BOX(hboxPresets), lblPresets, FALSE, FALSE, 0);
 	
 	// Add the presets dropdown.
-	cboPresets = gtk_combo_box_new_text();
+	cboPresets = gtk_combo_box_new();
 	gtk_widget_show(cboPresets);
 	gtk_box_pack_start(GTK_BOX(hboxPresets), cboPresets, FALSE, FALSE, 0);
 	gtk_label_set_mnemonic_widget(GTK_LABEL(lblPresets), cboPresets);
@@ -143,7 +143,7 @@ void ntsc_window_show(void *parent)
 	int i;
 	for (i = 0; i < NTSC_PRESETS_COUNT; i++)
 	{
-		gtk_combo_box_append_text(GTK_COMBO_BOX(cboPresets), ntsc_presets[i].name);
+		gtk_combo_box_text_append_text(GTK_COMBO_BOX(cboPresets), ntsc_presets[i].name);
 	}
 	
 	// Scanlines checkbox.

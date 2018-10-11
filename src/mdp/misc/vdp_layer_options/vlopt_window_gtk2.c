@@ -79,7 +79,7 @@ void vlopt_window_show(void *parent)
 	gtk_window_set_position(GTK_WINDOW(vlopt_window), GTK_WIN_POS_CENTER);
 	gtk_window_set_resizable(GTK_WINDOW(vlopt_window), FALSE);
 	gtk_window_set_type_hint(GTK_WINDOW(vlopt_window), GDK_WINDOW_TYPE_HINT_DIALOG);
-	gtk_dialog_set_has_separator(GTK_DIALOG(vlopt_window), FALSE);
+	_gtk_dialog_set_ignore_separator(GTK_DIALOG(vlopt_window), FALSE);
 	
 	// Add the window icons.
 	GList *icon_list = NULL;

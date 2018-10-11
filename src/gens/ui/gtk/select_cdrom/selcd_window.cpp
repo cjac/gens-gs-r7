@@ -59,7 +59,7 @@ GtkWidget *selcd_window = NULL;
 
 // Widgets.
 static GtkWidget	*cboDeviceName;
-static GtkWidget	*cboDriveSpeed;
+static GtkComboBoxText	*cboDriveSpeed;
 static GtkWidget	*btnCancel, *btnApply, *btnSave;
 
 // Select CD-ROM Drive load/save functions.
@@ -69,7 +69,7 @@ static int	selcd_window_save(void);
 // Callbacks.
 static gboolean	selcd_window_callback_close(GtkWidget *widget, GdkEvent *event, gpointer user_data);
 static void	selcd_window_callback_response(GtkDialog *dialog, gint response_id, gpointer user_data);
-static void	selcd_window_callback_combobox_changed(GtkComboBox *widget, gpointer user_data);
+static void	selcd_window_callback_combobox_changed(GtkComboBoxText *widget, gpointer user_data);
 
 // Drive speed definitions. 0 == automatic; -1 == end of list.
 static int CD_DriveSpeed[] = {0, 1, 2, 4, 8, 10, 12, 16, 20, 24, 32, 36, 40, 48, 50, 52, -1};
@@ -94,7 +94,7 @@ void selcd_window_show(void)
 	gtk_window_set_position(GTK_WINDOW(selcd_window), GTK_WIN_POS_CENTER);
 	gtk_window_set_resizable(GTK_WINDOW(selcd_window), FALSE);
 	gtk_window_set_type_hint(GTK_WINDOW(selcd_window), GDK_WINDOW_TYPE_HINT_DIALOG);
-	gtk_dialog_set_has_separator(GTK_DIALOG(selcd_window), FALSE);
+	_gtk_dialog_set_ignore_separator(GTK_DIALOG(selcd_window), FALSE);
 	
 	// Callbacks for if the window is closed.
 	g_signal_connect((gpointer)(selcd_window), "delete_event",
@@ -127,8 +127,11 @@ void selcd_window_show(void)
 	gtk_widget_show(lblDeviceName);
 	gtk_box_pack_start(GTK_BOX(hboxDeviceName), lblDeviceName, false, false, 0);
 	
+	// Create the dropdown for the CD-ROM drive speed selection.
+	cboDriveSpeed = gtk_combo_box_text_new();
+
 	// Create the dropdown for the CD-ROM device name.
-	cboDeviceName = gtk_combo_box_entry_new_text();
+  cboDeviceName = gtk_combo_box_text_insert_text(cboDriveSpeed,13,"this is text");
 	gtk_entry_set_max_length(GTK_ENTRY(gtk_bin_get_child(GTK_BIN(cboDeviceName))), 63);
 	gtk_label_set_mnemonic_widget(GTK_LABEL(lblDeviceName), cboDeviceName);
 	gtk_widget_show(cboDeviceName);
@@ -155,8 +158,6 @@ void selcd_window_show(void)
 	gtk_widget_show(vboxDriveSpeedDropdown);
 	gtk_box_pack_start(GTK_BOX(hboxDriveSpeed), vboxDriveSpeedDropdown, true, true, 0);
 	
-	// Create the dropdown for the CD-ROM drive speed selection.
-	cboDriveSpeed = gtk_combo_box_new_text();
 	char tmpSpeed[16];
 	for (unsigned int i = 0; i < ((sizeof(CD_DriveSpeed) / sizeof(CD_DriveSpeed[0])) - 1); i++)
 	{
@@ -167,7 +168,7 @@ void selcd_window_show(void)
 		else
 			szprintf(tmpSpeed, sizeof(tmpSpeed), "%dx", CD_DriveSpeed[i]);
 
-		gtk_combo_box_append_text(GTK_COMBO_BOX(cboDriveSpeed), tmpSpeed);
+		gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(cboDriveSpeed), tmpSpeed);
 	}
 	gtk_widget_show(cboDriveSpeed);
 	gtk_box_pack_start(GTK_BOX(vboxDriveSpeedDropdown), cboDriveSpeed, true, false, 0);
@@ -252,7 +253,7 @@ static void selcd_window_init(void)
 				continue;
 			
 			// Add the device file.
-			gtk_combo_box_append_text(GTK_COMBO_BOX(cboDeviceName), tmpDeviceName);
+			gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(cboDeviceName), tmpDeviceName);
 		}
 	}
 	
@@ -268,7 +269,7 @@ static void selcd_window_init(void)
 			break;
 		}
 	}
-	gtk_combo_box_set_active(GTK_COMBO_BOX(cboDriveSpeed), driveSpeed);
+	//gtk_combo_box_set_active(GTK_COMBO_BOX_TEXT(cboDriveSpeed), driveSpeed);
 	
 	// Disable the "Apply" button initially.
 	gtk_widget_set_sensitive(btnApply, false);
@@ -327,8 +328,9 @@ static int selcd_window_save(void)
 	}
 	
 	// Drive speed.
-	int driveSpeed = gtk_combo_box_get_active(GTK_COMBO_BOX(cboDriveSpeed));
-	if (driveSpeed < 0 || driveSpeed >= ((sizeof(CD_DriveSpeed) / sizeof(CD_DriveSpeed[0])) - 1))
+//	int driveSpeed = gtk_combo_box_get_active(GTK_COMBO_BOX(cboDriveSpeed));
+  int driveSpeed = gtk_combo_box_text_get_active_text(cboDriveSpeed);
+	if (driveSpeed < 0 || (unsigned int) driveSpeed >= ((sizeof(CD_DriveSpeed) / sizeof(CD_DriveSpeed[0])) - 1))
 		driveSpeed = 0;
 	cdromSpeed = CD_DriveSpeed[driveSpeed];
 	
@@ -410,7 +412,7 @@ static void selcd_window_callback_response(GtkDialog *dialog, gint response_id, 
  * @param widget
  * @param user_data
  */
-static void selcd_window_callback_combobox_changed(GtkComboBox *widget, gpointer user_data)
+static void selcd_window_callback_combobox_changed(GtkComboBoxText *widget, gpointer user_data)
 {
 	GSFT_UNUSED_PARAMETER(widget);
 	GSFT_UNUSED_PARAMETER(user_data);

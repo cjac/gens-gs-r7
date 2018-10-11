@@ -111,7 +111,7 @@ void gg_window_show(void *parent)
 	gtk_window_set_position(GTK_WINDOW(gg_window), GTK_WIN_POS_CENTER);
 	gtk_window_set_resizable(GTK_WINDOW(gg_window), TRUE);
 	gtk_window_set_type_hint(GTK_WINDOW(gg_window), GDK_WINDOW_TYPE_HINT_DIALOG);
-	gtk_dialog_set_has_separator(GTK_DIALOG(gg_window), FALSE);
+	_gtk_dialog_set_ignore_separator(GTK_DIALOG(gg_window), FALSE);
 	
 	// Add the window icon.
 	GList *icon_list = NULL;

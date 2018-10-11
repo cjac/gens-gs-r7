@@ -85,7 +85,7 @@ void ca_window_show(void)
 	gtk_window_set_position(GTK_WINDOW(ca_window), GTK_WIN_POS_CENTER);
 	gtk_window_set_resizable(GTK_WINDOW(ca_window), FALSE);
 	gtk_window_set_type_hint(GTK_WINDOW(ca_window), GDK_WINDOW_TYPE_HINT_DIALOG);
-	gtk_dialog_set_has_separator(GTK_DIALOG(ca_window), FALSE);
+	_gtk_dialog_set_ignore_separator(GTK_DIALOG(ca_window), FALSE);
 	
 	// Callbacks for if the window is closed.
 	g_signal_connect((gpointer)(ca_window), "delete_event",
@@ -194,7 +194,7 @@ void ca_window_show(void)
 	gtk_box_pack_start(GTK_BOX(hboxColorScaleMethod), lblColorScaleMethod, TRUE, FALSE, 0);
 	
 	// Create the "Color Scale Method" dropdown.
-	cboColorScaleMethod = gtk_combo_box_new_text();
+	cboColorScaleMethod = gtk_combo_box_new();
 	gtk_widget_show(cboColorScaleMethod);
 	gtk_label_set_mnemonic_widget(GTK_LABEL(lblColorScaleMethod), cboColorScaleMethod);
 	gtk_box_pack_start(GTK_BOX(hboxColorScaleMethod), cboColorScaleMethod, TRUE, FALSE, 0);
@@ -202,9 +202,9 @@ void ca_window_show(void)
 			  G_CALLBACK(ca_window_callback_widget_changed), NULL);
 	
 	// Add the items to the "Color Scale Method" dropdown.
-	gtk_combo_box_append_text(GTK_COMBO_BOX(cboColorScaleMethod), "Raw");
-	gtk_combo_box_append_text(GTK_COMBO_BOX(cboColorScaleMethod), "Full");
-	gtk_combo_box_append_text(GTK_COMBO_BOX(cboColorScaleMethod), "Full with S/H");
+	gtk_combo_box_text_append_text(GTK_COMBO_BOX(cboColorScaleMethod), "Raw");
+	gtk_combo_box_text_append_text(GTK_COMBO_BOX(cboColorScaleMethod), "Full");
+	gtk_combo_box_text_append_text(GTK_COMBO_BOX(cboColorScaleMethod), "Full with S/H");
 	
 	// Create the dialog buttons.
 	btnApply  = gtk_dialog_add_button(GTK_DIALOG(ca_window), GTK_STOCK_APPLY, GTK_RESPONSE_APPLY);

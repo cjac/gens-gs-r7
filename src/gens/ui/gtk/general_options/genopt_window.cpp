@@ -140,7 +140,7 @@ void genopt_window_show(void)
 	gtk_window_set_position(GTK_WINDOW(genopt_window), GTK_WIN_POS_CENTER);
 	gtk_window_set_resizable(GTK_WINDOW(genopt_window), false);
 	gtk_window_set_type_hint(GTK_WINDOW(genopt_window), GDK_WINDOW_TYPE_HINT_DIALOG);
-	gtk_dialog_set_has_separator(GTK_DIALOG(genopt_window), false);
+	_gtk_dialog_set_ignore_separator(GTK_DIALOG(genopt_window), false);
 	
 	// Callbacks for if the window is closed.
 	g_signal_connect((gpointer)genopt_window, "delete_event",
@@ -458,11 +458,11 @@ static void genopt_window_create_misc_settings_frame(GtkWidget *container)
 	gtk_box_pack_start(GTK_BOX(vboxIntroEffect), lblIntroEffect, false, false, 0);
 	
 	// Dropdown for intro effect.
-	cboIntroEffect = gtk_combo_box_new_text();
-	gtk_combo_box_append_text(GTK_COMBO_BOX(cboIntroEffect), "None");
-	gtk_combo_box_append_text(GTK_COMBO_BOX(cboIntroEffect), "Gens Logo Effect");
-	gtk_combo_box_append_text(GTK_COMBO_BOX(cboIntroEffect), "\"Crazy\" Effect");
-	//gtk_combo_box_append_text(GTK_COMBO_BOX(cboIntroEffect), "Genesis TMSS"); // TODO: Broken.
+	cboIntroEffect = gtk_combo_box_text_new();
+	gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(cboIntroEffect), "None");
+	gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(cboIntroEffect), "Gens Logo Effect");
+	gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(cboIntroEffect), "\"Crazy\" Effect");
+	//gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(cboIntroEffect), "Genesis TMSS"); // TODO: Broken.
 	gtk_widget_show(cboIntroEffect);
 	gtk_box_pack_start(GTK_BOX(vboxIntroEffect), cboIntroEffect, false, false, 0);
 	g_signal_connect((gpointer)(cboIntroEffect), "changed",
@@ -529,9 +529,9 @@ static void genopt_window_init(void)
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(optOSD_Color[1][(curMsgStyle & 0x06) >> 1]), true);
 	
 	// Intro effect.
-	gtk_combo_box_set_active(GTK_COMBO_BOX(cboIntroEffect), Intro_Style);
-	if (gtk_combo_box_get_active(GTK_COMBO_BOX(cboIntroEffect)) == -1)
-		gtk_combo_box_set_active(GTK_COMBO_BOX(cboIntroEffect), 0);
+//	gtk_combo_box_set_active(GTK_COMBO_BOX_TEXT(cboIntroEffect), Intro_Style);
+//	if (gtk_combo_box_get_active(GTK_COMBO_BOX_TEXT(cboIntroEffect)) == -1)
+//		gtk_combo_box_set_active(GTK_COMBO_BOX_TEXT(cboIntroEffect), 0);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(optIntroEffectColor[vdraw_get_intro_effect_color()]), true);
 	
 	// Disable the "Apply" button initially.
@@ -597,7 +597,7 @@ static void genopt_window_save(void)
 	vdraw_set_msg_style(curMsgStyle);
 	
 	// Intro effect.
-	Intro_Style = gtk_combo_box_get_active(GTK_COMBO_BOX(cboIntroEffect));
+//	Intro_Style = gtk_combo_box_get_active(GTK_COMBO_BOX_TEXT(cboIntroEffect));
 	if (Intro_Style < 0)
 		Intro_Style = 0;
 	

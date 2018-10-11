@@ -66,7 +66,7 @@ static zipsel_dialog_t zipsel_dialog_create(void)
 	gtk_window_set_modal(GTK_WINDOW(zs.dialog), TRUE);
 	gtk_window_set_resizable(GTK_WINDOW(zs.dialog), TRUE);
 	gtk_window_set_type_hint(GTK_WINDOW(zs.dialog), GDK_WINDOW_TYPE_HINT_DIALOG);
-	gtk_dialog_set_has_separator(GTK_DIALOG(zs.dialog), FALSE);
+	_gtk_dialog_set_ignore_separator(GTK_DIALOG(zs.dialog), FALSE);
 	gtk_window_set_transient_for(GTK_WINDOW(zs.dialog), GTK_WINDOW(gens_window));
 	
 	// Make the window a decent size.
